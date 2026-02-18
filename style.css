@@ -37,3 +37,14 @@ li {
     display: flex;
     justify-content: space-between;
 }
+
+li {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+li.done {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background: #d4edda;
+    transform: scale(0.98);
+}
