@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="app">
         <h1>Pendientes</h1>
 
         <div class="filters">
-            <button onclick="window.app.setFilter('all')" class="filter-btn active">Todas</button>
-            <button onclick="window.app.setFilter('pending')" class="filter-btn">Pendientes</button>
-            <button onclick="window.app.setFilter('completed')" class="filter-btn">Hechas</button>
+            <button onclick="window.app.setFilter('all')" class="filter-btn active" id="btn-all">Todas</button>
+            <button onclick="window.app.setFilter('pending')" class="filter-btn" id="btn-pending">Pendientes</button>
+            <button onclick="window.app.setFilter('completed')" class="filter-btn" id="btn-completed">Hechas</button>
         </div>
 
         <div class="input-group">
@@ -22,10 +21,8 @@
             <button id="btnAgregar">Añadir</button>
         </div>
 
-        <ul id="listaTareas">
-            </ul>
+        <ul id="listaTareas"></ul>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
