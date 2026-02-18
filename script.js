@@ -49,25 +49,24 @@ input.addEventListener('keypress', (e) => {
         boton.click(); // Esto simula el clic cuando presionas Enter
     }
 });
-
 async function obtenerFrase() {
     try {
-        // Pedimos datos a una API de frases célebres
-        const respuesta = await fetch('https://api.quotable.io/random?tags=technology,famous-quotes');
+        const respuesta = await fetch('https://api.adviceslip.com/advice');
         const datos = await respuesta.json();
         
-        // Creamos un elemento para mostrar la frase
+        // Verificamos en consola si llegaron los datos
+        console.log("Datos de la API:", datos);
+
         const fraseDiv = document.createElement('p');
-        fraseDiv.style.fontStyle = "italic";
-        fraseDiv.style.color = "#555";
-        fraseDiv.innerText = `"${datos.content}" — ${datos.author}`;
+        fraseDiv.style.padding = "10px";
+        fraseDiv.style.backgroundColor = "#f0f8ff";
+        fraseDiv.style.borderRadius = "5px";
+        fraseDiv.style.fontSize = "0.9rem";
+        fraseDiv.innerText = `Consejo del día: ${datos.slip.advice}`;
         
-        // La insertamos al principio de la app
         document.querySelector('.app').prepend(fraseDiv);
     } catch (error) {
-        console.log("No pudimos conectar con la API de frases", error);
+        console.error("Error al conectar:", error);
     }
 }
-
-// Llamamos a la función al cargar la página
 obtenerFrase();
