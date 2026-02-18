@@ -10,12 +10,11 @@
     <div class="app">
         <h1>Pendientes</h1>
 
-        <div class="filters">
-            <button onclick="window.app.setFilter('all')" class="filter-btn active" id="btn-all">Todas</button>
-            <button onclick="window.app.setFilter('pending')" class="filter-btn" id="btn-pending">Pendientes</button>
-            <button onclick="window.app.setFilter('completed')" class="filter-btn" id="btn-completed">Hechas</button>
-        </div>
-
+<div class="filters">
+    <button id="btn-all" onclick="window.app.setFilter('all')" class="filter-btn active">Todas</button>
+    <button id="btn-pending" onclick="window.app.setFilter('pending')" class="filter-btn">Pendientes</button>
+    <button id="btn-completed" onclick="window.app.setFilter('completed')" class="filter-btn">Hechas</button>
+</div>
         <div class="input-group">
             <input type="text" id="tareaInput" placeholder="¿Qué hay que hacer?">
             <button id="btnAgregar">Añadir</button>
