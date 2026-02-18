@@ -43,3 +43,9 @@ window.onload = () => {
     console.log("Cargando desde Storage:", guardadas);
     guardadas.forEach(t => renderizarTarea(t));
 };
+
+input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        boton.click(); // Esto simula el clic cuando presionas Enter
+    }
+});
