@@ -1,0 +1,39 @@
+body {
+    background: #eef2f3;
+    display: flex;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+.app {
+    background: white;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 350px;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+button {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+li {
+    list-style: none;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}
