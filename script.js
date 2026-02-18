@@ -4,9 +4,10 @@ class TodoApp {
         this.init();
     }
 
-    async init() {
+    init() {
         this.render();
-        await this.fetchAdvice();
+        this.fetchAdvice();
+        this.setupEventListeners();
     }
 
     setState(newState) {
@@ -19,36 +20,39 @@ class TodoApp {
         try {
             const res = await fetch('https://api.adviceslip.com/advice');
             const { slip } = await res.json();
-            this.updateAdviceUI(slip.advice);
-        } catch (err) {
-            console.error("API Error", err);
-        }
+            const header = document.querySelector('h1');
+            const existing = document.getElementById('api-frase');
+            if (existing) existing.remove();
+            const consejo = document.createElement('p');
+            consejo.id = "api-frase";
+            consejo.innerHTML = `<small>💡 ${slip.advice}</small>`;
+            header.insertAdjacentElement('afterend', consejo);
+        } catch (e) { console.error("API Error"); }
     }
 
-    updateAdviceUI(advice) {
-        const header = document.querySelector('h1');
-        const existing = document.getElementById('api-frase');
-        if (existing) existing.remove();
-        
-        const consejo = document.createElement('p');
-        consejo.id = "api-frase";
-        consejo.innerHTML = `<small>💡 ${advice}</small>`;
-        header.insertAdjacentElement('afterend', consejo);
+    setupEventListeners() {
+        const input = document.getElementById('tareaInput');
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && input.value.trim()) {
+                this.addTarea(input.value.trim());
+                input.value = '';
+            }
+        });
+
+        document.getElementById('btnAgregar').onclick = () => {
+            if (input.value.trim()) {
+                this.addTarea(input.value.trim());
+                input.value = '';
+            }
+        };
     }
 
     addTarea(text) {
-        const newTask = {
-            id: crypto.randomUUID(),
-            text,
-            completed: false
-        };
-        this.setState([...this.state, newTask]);
+        this.setState([...this.state, { id: Date.now().toString(), text, completed: false }]);
     }
 
     toggleTask(id) {
-        const updated = this.state.map(t => 
-            t.id === id ? { ...t, completed: !t.completed } : t
-        );
+        const updated = this.state.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
         this.setState(updated);
     }
 
@@ -58,32 +62,29 @@ class TodoApp {
 
     render() {
         const lista = document.getElementById('listaTareas');
-        if (!lista) return;
+        lista.innerHTML = ''; // Limpiamos la lista
         
-        lista.innerHTML = this.state.map(t => `
-            <li class="${t.completed ? 'done' : ''}" onclick="window.app.toggleTask('${t.id}')">
+        this.state.forEach(t => {
+            const li = document.createElement('li');
+            li.className = t.completed ? 'done' : '';
+            li.innerHTML = `
                 <span>${t.text}</span>
-                <button class="btn-del" onclick="event.stopPropagation(); window.app.deleteTask('${t.id}')">X</button>
-            </li>
-        `).join('');
+                <button class="btn-del">X</button>
+            `;
+            
+            // Evento para tachar (asignado directamente al elemento)
+            li.onclick = () => this.toggleTask(t.id);
+            
+            // Evento para borrar
+            li.querySelector('.btn-del').onclick = (e) => {
+                e.stopPropagation();
+                this.deleteTask(t.id);
+            };
+            
+            lista.appendChild(li);
+        });
     }
 }
 
-// CRUCIAL: Exponer 'app' al objeto global window
-window.app = new TodoApp();
-
-document.getElementById('tareaInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && e.target.value.trim()) {
-        window.app.addTarea(e.target.value.trim());
-        e.target.value = '';
-    }
-});
-
-// También vinculamos el botón "Añadir" original por si acaso
-document.getElementById('btnAgregar').onclick = () => {
-    const input = document.getElementById('tareaInput');
-    if (input.value.trim()) {
-        window.app.addTarea(input.value.trim());
-        input.value = '';
-    }
-};
+// Inicializamos la app
+const app = new TodoApp();
