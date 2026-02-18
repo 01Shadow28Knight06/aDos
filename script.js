@@ -49,3 +49,25 @@ input.addEventListener('keypress', (e) => {
         boton.click(); // Esto simula el clic cuando presionas Enter
     }
 });
+
+async function obtenerFrase() {
+    try {
+        // Pedimos datos a una API de frases célebres
+        const respuesta = await fetch('https://api.quotable.io/random?tags=technology,famous-quotes');
+        const datos = await respuesta.json();
+        
+        // Creamos un elemento para mostrar la frase
+        const fraseDiv = document.createElement('p');
+        fraseDiv.style.fontStyle = "italic";
+        fraseDiv.style.color = "#555";
+        fraseDiv.innerText = `"${datos.content}" — ${datos.author}`;
+        
+        // La insertamos al principio de la app
+        document.querySelector('.app').prepend(fraseDiv);
+    } catch (error) {
+        console.log("No pudimos conectar con la API de frases", error);
+    }
+}
+
+// Llamamos a la función al cargar la página
+obtenerFrase();
