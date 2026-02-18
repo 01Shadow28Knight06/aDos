@@ -49,24 +49,30 @@ input.addEventListener('keypress', (e) => {
         boton.click(); // Esto simula el clic cuando presionas Enter
     }
 });
-async function obtenerFrase() {
+// Función para obtener el consejo de la API
+async function obtenerConsejo() {
+    console.log("Intentando conectar con la API..."); // Verificamos en consola
     try {
         const respuesta = await fetch('https://api.adviceslip.com/advice');
         const datos = await respuesta.json();
         
-        // Verificamos en consola si llegaron los datos
-        console.log("Datos de la API:", datos);
+        console.log("Consejo recibido:", datos.slip.advice);
 
-        const fraseDiv = document.createElement('p');
-        fraseDiv.style.padding = "10px";
-        fraseDiv.style.backgroundColor = "#f0f8ff";
-        fraseDiv.style.borderRadius = "5px";
-        fraseDiv.style.fontSize = "0.9rem";
-        fraseDiv.innerText = `Consejo del día: ${datos.slip.advice}`;
+        // Creamos el elemento visual
+        const header = document.querySelector('h1');
+        const consejoTexto = document.createElement('p');
+        consejoTexto.id = "api-frase";
+        consejoTexto.innerHTML = `<small>💡 ${datos.slip.advice}</small>`;
+        consejoTexto.style.color = "#4a90e2";
+        consejoTexto.style.marginBottom = "15px";
+
+        // Lo insertamos justo debajo del título "Pendientes"
+        header.insertAdjacentElement('afterend', consejoTexto);
         
-        document.querySelector('.app').prepend(fraseDiv);
     } catch (error) {
-        console.error("Error al conectar:", error);
+        console.error("Fallo la API:", error);
     }
 }
-obtenerFrase();
+
+// Ejecutamos la función
+obtenerConsejo();
