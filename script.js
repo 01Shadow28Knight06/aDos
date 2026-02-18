@@ -1,78 +1,81 @@
-const input = document.getElementById('tareaInput');
-const boton = document.getElementById('btnAgregar');
-const lista = document.getElementById('listaTareas');
-
-// Función para guardar
-function guardarEnStorage() {
-    const tareas = [];
-    document.querySelectorAll('#listaTareas li').forEach(li => {
-        // Obtenemos solo el texto, ignorando el de la "X" del botón
-        tareas.push(li.firstChild.textContent);
-    });
-    localStorage.setItem('misTareas', JSON.stringify(tareas));
-    console.log("Guardado en Storage:", tareas);
-}
-
-// Función para crear el elemento visual
-function renderizarTarea(texto) {
-    const li = document.createElement('li');
-    li.innerText = texto;
-
-    const btn = document.createElement('button');
-    btn.innerText = "X";
-    btn.onclick = () => { 
-        li.remove(); 
-        guardarEnStorage(); 
-    };
-
-    li.appendChild(btn);
-    lista.appendChild(li);
-}
-
-// Escuchar el click
-boton.addEventListener('click', () => {
-    if (input.value.trim() === "") return;
-    renderizarTarea(input.value);
-    guardarEnStorage();
-    input.value = "";
-});
-
-// CARGAR AL INICIO (La clave del refresh)
-window.onload = () => {
-    const guardadas = JSON.parse(localStorage.getItem('misTareas')) || [];
-    console.log("Cargando desde Storage:", guardadas);
-    guardadas.forEach(t => renderizarTarea(t));
-};
-
-input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        boton.click(); // Esto simula el clic cuando presionas Enter
+class TodoApp {
+    constructor() {
+        // Estado privado
+        this.state = JSON.parse(localStorage.getItem('pro_tasks')) || [];
+        this.init();
     }
-});
-// Función para obtener el consejo de la API
-async function obtenerConsejo() {
-    console.log("Intentando conectar con la API..."); // Verificamos en consola
-    try {
-        const respuesta = await fetch('https://api.adviceslip.com/advice');
-        const datos = await respuesta.json();
-        
-        console.log("Consejo recibido:", datos.slip.advice);
 
-        // Creamos el elemento visual
-        const header = document.querySelector('h1');
-        const consejoTexto = document.createElement('p');
-        consejoTexto.id = "api-frase";
-        consejoTexto.innerHTML = `<small>💡 ${datos.slip.advice}</small>`;
-        consejoTexto.style.color = "#4a90e2";
-        consejoTexto.style.marginBottom = "15px";
+    async init() {
+        this.render();
+        // Ejecución paralela de servicios externos
+        await Promise.allSettled([this.fetchAdvice(), this.logAnalytics()]);
+    }
 
-        // Lo insertamos justo debajo del título "Pendientes"
-        header.insertAdjacentElement('afterend', consejoTexto);
-        
-    } catch (error) {
-        console.error("Fallo la API:", error);
+    // Método reactivo: Actualiza datos y UI en un solo flujo
+    setState(newState) {
+        this.state = newState;
+        localStorage.setItem('pro_tasks', JSON.stringify(this.state));
+        this.render();
+    }
+
+    async fetchAdvice() {
+        try {
+            const res = await fetch('https://api.adviceslip.com/advice');
+            if (!res.ok) throw new Error("Network response was not ok");
+            const { slip } = await res.json();
+            this.updateAdviceUI(slip.advice);
+        } catch (err) {
+            console.error("Critical API Failure:", err);
+        }
+    }
+
+    addTarea(text) {
+        const newTask = {
+            id: crypto.randomUUID(), // Identificador único universal
+            text,
+            completed: false,
+            createdAt: new Date().toISOString()
+        };
+        this.setState([...this.state, newTask]);
+    }
+
+    toggleTask(id) {
+        const updated = this.state.map(t => 
+            t.id === id ? { ...t, completed: !t.completed } : t
+        );
+        this.setState(updated);
+    }
+
+    render() {
+        const lista = document.getElementById('listaTareas');
+        lista.innerHTML = this.state.map(t => `
+            <li class="${t.completed ? 'done' : ''}" onclick="app.toggleTask('${t.id}')">
+                <span>${t.text}</span>
+                <button onclick="event.stopPropagation(); app.deleteTask('${t.id}')">X</button>
+            </li>
+        `).join('');
+    }
+
+    deleteTask(id) {
+        this.setState(this.state.filter(t => t.id !== id));
+    }
+
+    logAnalytics() {
+        // Simulación de telemetría profesional
+        return new Promise(resolve => setTimeout(() => {
+            console.log("Analytics sent:", this.state.length, "tasks sync");
+            resolve();
+        }, 1000));
     }
 }
 
-// Ejecutamos la función
-obtenerConsejo();
+// Instanciación global para acceso desde el HTML
+const app = new TodoApp();
+
+// Listener de teclado optimizado
+document.getElementById('tareaInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+        app.addTarea(e.target.value.trim());
+        e.target.value = '';
+    }
+});
