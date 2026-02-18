@@ -17,11 +17,18 @@ class TodoApp {
         this.render();
     }
 
+    // Lógica de filtrado
     setFilter(newFilter) {
         this.filter = newFilter;
-        // Actualizar clase activa en botones
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`btn-${newFilter}`).classList.add('active');
+        // Cambiar estado visual de los botones
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Seleccionamos el botón por su ID dinámico
+        const activeBtn = document.getElementById(`btn-${newFilter}`);
+        if (activeBtn) activeBtn.classList.add('active');
+        
         this.render();
     }
 
@@ -39,6 +46,7 @@ class TodoApp {
 
     render() {
         const lista = document.getElementById('listaTareas');
+        if (!lista) return;
         lista.innerHTML = '';
 
         const filtradas = this.state.filter(t => {
@@ -51,6 +59,7 @@ class TodoApp {
             const li = document.createElement('li');
             li.className = t.completed ? 'done' : '';
             li.innerHTML = `<span>${t.text}</span><button class="btn-del">X</button>`;
+            
             li.onclick = () => this.toggleTask(t.id);
             li.querySelector('.btn-del').onclick = (e) => {
                 e.stopPropagation();
@@ -76,13 +85,16 @@ class TodoApp {
 
     setupEventListeners() {
         const input = document.getElementById('tareaInput');
+        const btn = document.getElementById('btnAgregar');
+        
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && input.value.trim()) {
                 this.addTarea(input.value.trim());
                 input.value = '';
             }
         });
-        document.getElementById('btnAgregar').onclick = () => {
+
+        btn.onclick = () => {
             if (input.value.trim()) {
                 this.addTarea(input.value.trim());
                 input.value = '';
@@ -91,4 +103,5 @@ class TodoApp {
     }
 }
 
+// ESTA LÍNEA ES EL PUENTE HACIA EL HTML
 window.app = new TodoApp();
