@@ -2,25 +2,44 @@ const input = document.getElementById('tareaInput');
 const boton = document.getElementById('btnAgregar');
 const lista = document.getElementById('listaTareas');
 
+// Función para guardar
+function guardarEnStorage() {
+    const tareas = [];
+    document.querySelectorAll('#listaTareas li').forEach(li => {
+        // Obtenemos solo el texto, ignorando el de la "X" del botón
+        tareas.push(li.firstChild.textContent);
+    });
+    localStorage.setItem('misTareas', JSON.stringify(tareas));
+    console.log("Guardado en Storage:", tareas);
+}
+
+// Función para crear el elemento visual
+function renderizarTarea(texto) {
+    const li = document.createElement('li');
+    li.innerText = texto;
+
+    const btn = document.createElement('button');
+    btn.innerText = "X";
+    btn.onclick = () => { 
+        li.remove(); 
+        guardarEnStorage(); 
+    };
+
+    li.appendChild(btn);
+    lista.appendChild(li);
+}
+
+// Escuchar el click
 boton.addEventListener('click', () => {
-    if (input.value === "") return; // No agregar tareas vacías
-
-    // 1. Crear el elemento de la lista (li)
-    const nuevaTarea = document.createElement('li');
-    
-    // 2. Asignarle el texto del input
-    nuevaTarea.innerText = input.value;
-
-    // 3. Agregar un botón de eliminar dentro de la tarea
-    const btnEliminar = document.createElement('button');
-    btnEliminar.innerText = "X";
-    btnEliminar.style.backgroundColor = "red";
-    btnEliminar.onclick = () => nuevaTarea.remove();
-
-    // 4. Meter el botón en la tarea y la tarea en la lista
-    nuevaTarea.appendChild(btnEliminar);
-    lista.appendChild(nuevaTarea);
-
-    // 5. Limpiar el input
+    if (input.value.trim() === "") return;
+    renderizarTarea(input.value);
+    guardarEnStorage();
     input.value = "";
 });
+
+// CARGAR AL INICIO (La clave del refresh)
+window.onload = () => {
+    const guardadas = JSON.parse(localStorage.getItem('misTareas')) || [];
+    console.log("Cargando desde Storage:", guardadas);
+    guardadas.forEach(t => renderizarTarea(t));
+};
