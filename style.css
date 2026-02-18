@@ -126,3 +126,29 @@ li.done span {
 .btn-del:hover {
     background: #ff6b81;
 }
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    background: #e0e0e0;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: #4a90e2;
+    color: white;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+}
+
+.filter-btn:hover {
+    background: #d0d0d0;
+}
