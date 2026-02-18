@@ -1,16 +1,150 @@
-body { background: #f4f7f6; display: flex; justify-content: center; font-family: sans-serif; padding-top: 50px; }
-.app { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 350px; }
-h1 { margin: 0; font-size: 1.5rem; }
-#api-frase { color: #4a90e2; font-size: 0.8rem; margin: 10px 0; }
+/* 1. Reset y Estilos Base */
+body {
+    background: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding-top: 50px;
+    margin: 0;
+}
 
-.filters { display: flex; gap: 5px; margin-bottom: 15px; justify-content: center; }
-.filter-btn { border: none; padding: 5px 10px; border-radius: 15px; cursor: pointer; background: #eee; font-size: 0.75rem; }
-.filter-btn.active { background: #4a90e2; color: white; }
+.app {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 350px;
+}
 
-.input-group { display: flex; gap: 5px; margin-bottom: 20px; }
-input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-#btnAgregar { background: #4a90e2; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; }
+h1 {
+    margin: 0 0 5px 0;
+    font-size: 1.6rem;
+    color: #333;
+}
 
-li { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
-li.done { background: #d4edda; text-decoration: line-through; color: #777; }
-.btn-del { background: #ff4757; color: white; border: none; border-radius: 3px; padding: 2px 6px; cursor: pointer; }
+/* 2. API Advice Styling */
+#api-frase {
+    color: #4a90e2;
+    font-size: 0.85rem;
+    margin: 10px 0 20px 0;
+    padding: 10px;
+    background: #ebf5ff;
+    border-radius: 6px;
+    border-left: 4px solid #4a90e2;
+    line-height: 1.4;
+}
+
+/* 3. Filtros (La sección que añadimos) */
+.filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-btn {
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    background: #eee;
+    font-size: 0.8rem;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #e2e2e2;
+}
+
+.filter-btn.active {
+    background: #4a90e2;
+    color: white;
+    box-shadow: 0 3px 8px rgba(74, 144, 226, 0.3);
+}
+
+/* 4. Input y Botón Agregar */
+.input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #4a90e2;
+}
+
+#btnAgregar {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#btnAgregar:hover {
+    background: #357abd;
+}
+
+/* 5. Lista de Tareas Dinámica */
+#listaTareas {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.3s;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+/* ESTADO: Completado */
+li.done {
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+li.done span {
+    text-decoration: line-through;
+    color: #155724;
+    opacity: 0.6;
+}
+
+/* Botón Eliminar */
+.btn-del {
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.btn-del:hover {
+    background: #ff6b81;
+}
