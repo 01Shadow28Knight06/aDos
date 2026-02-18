@@ -2,19 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Lista de Tareas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Lista de Tareas Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="app">
         <h1>Pendientes</h1>
+
+        <div class="filters">
+            <button onclick="window.app.setFilter('all')" class="filter-btn active">Todas</button>
+            <button onclick="window.app.setFilter('pending')" class="filter-btn">Pendientes</button>
+            <button onclick="window.app.setFilter('completed')" class="filter-btn">Hechas</button>
+        </div>
+
         <div class="input-group">
             <input type="text" id="tareaInput" placeholder="¿Qué hay que hacer?">
             <button id="btnAgregar">Añadir</button>
         </div>
+
         <ul id="listaTareas">
             </ul>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
