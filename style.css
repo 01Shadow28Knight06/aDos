@@ -1,154 +1,16 @@
-/* Estilos Globales */
-body {
-    background: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+body { background: #f4f7f6; display: flex; justify-content: center; font-family: sans-serif; padding-top: 50px; }
+.app { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 350px; }
+h1 { margin: 0; font-size: 1.5rem; }
+#api-frase { color: #4a90e2; font-size: 0.8rem; margin: 10px 0; }
 
-/* Contenedor Principal */
-.app {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-}
+.filters { display: flex; gap: 5px; margin-bottom: 15px; justify-content: center; }
+.filter-btn { border: none; padding: 5px 10px; border-radius: 15px; cursor: pointer; background: #eee; font-size: 0.75rem; }
+.filter-btn.active { background: #4a90e2; color: white; }
 
-h1 {
-    margin: 0 0 10px 0;
-    font-size: 1.8rem;
-    color: #333;
-}
+.input-group { display: flex; gap: 5px; margin-bottom: 20px; }
+input { flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+#btnAgregar { background: #4a90e2; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; }
 
-/* Frase de la API */
-#api-frase {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: #e7f3ff;
-    border-radius: 6px;
-    color: #4a90e2;
-    line-height: 1.4;
-    font-size: 0.9rem;
-    border-left: 4px solid #4a90e2;
-}
-
-/* Grupo de Entrada */
-.input-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-input[type="text"] {
-    flex-grow: 1;
-    padding: 12px;
-    border: 2px solid #eee;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus {
-    border-color: #4a90e2;
-}
-
-button#btnAgregar {
-    background: #4a90e2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-button#btnAgregar:hover {
-    background: #357abd;
-}
-
-/* Lista de Tareas */
-#listaTareas {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-li {
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #eee;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
-}
-
-li:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-/* ESTADO: Tarea Completada (Lo que pediste arreglar) */
-li.done {
-    background-color: #d4edda !important;
-    border-color: #c3e6cb;
-    opacity: 0.8;
-}
-
-li.done span {
-    text-decoration: line-through;
-    color: #155724;
-}
-
-/* Botón de Eliminar */
-.btn-del {
-    background: #ff4757;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: background 0.2s;
-}
-
-.btn-del:hover {
-    background: #ff6b81;
-}
-.filters {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.filter-btn {
-    background: #e0e0e0;
-    border: none;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.filter-btn.active {
-    background: #4a90e2;
-    color: white;
-    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
-}
-
-.filter-btn:hover {
-    background: #d0d0d0;
-}
+li { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
+li.done { background: #d4edda; text-decoration: line-through; color: #777; }
+.btn-del { background: #ff4757; color: white; border: none; border-radius: 3px; padding: 2px 6px; cursor: pointer; }
