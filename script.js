@@ -1,7 +1,7 @@
 class TodoApp {
     constructor() {
         this.state = JSON.parse(localStorage.getItem('pro_tasks')) || [];
-        this.filter = 'all'; // Estado del filtro: 'all', 'pending', 'completed'
+        this.filter = 'all'; 
         this.init();
     }
 
@@ -17,13 +17,11 @@ class TodoApp {
         this.render();
     }
 
-    // Nueva función para cambiar el filtro
     setFilter(newFilter) {
         this.filter = newFilter;
-        // Actualizamos visualmente los botones
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.innerText.toLowerCase().includes(newFilter.replace('all', 'todas').replace('pending', 'pendientes').replace('completed', 'hechas')));
-        });
+        // Actualizar clase activa en botones
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${newFilter}`).classList.add('active');
         this.render();
     }
 
@@ -43,14 +41,13 @@ class TodoApp {
         const lista = document.getElementById('listaTareas');
         lista.innerHTML = '';
 
-        // FILTRADO LÓGICO: Aquí ocurre la magia
-        const tareasFiltradas = this.state.filter(t => {
+        const filtradas = this.state.filter(t => {
             if (this.filter === 'pending') return !t.completed;
             if (this.filter === 'completed') return t.completed;
             return true;
         });
 
-        tareasFiltradas.forEach(t => {
+        filtradas.forEach(t => {
             const li = document.createElement('li');
             li.className = t.completed ? 'done' : '';
             li.innerHTML = `<span>${t.text}</span><button class="btn-del">X</button>`;
@@ -70,10 +67,10 @@ class TodoApp {
             const header = document.querySelector('h1');
             const existing = document.getElementById('api-frase');
             if (existing) existing.remove();
-            const consejo = document.createElement('p');
-            consejo.id = "api-frase";
-            consejo.innerHTML = `<small>💡 ${slip.advice}</small>`;
-            header.insertAdjacentElement('afterend', consejo);
+            const p = document.createElement('p');
+            p.id = "api-frase";
+            p.innerHTML = `<small>💡 ${slip.advice}</small>`;
+            header.insertAdjacentElement('afterend', p);
         } catch (e) { console.error("API Error"); }
     }
 
